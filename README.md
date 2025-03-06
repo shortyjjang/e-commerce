@@ -78,20 +78,14 @@ src/
 
 ### 개발 환경 설정
 
-1. 레포지토리 클론
-   ```bash
-   git clone https://github.com/your-username/e-commerce.git
-   cd e-commerce
-   ```
-
-2. 종속성 설치
+1. 종속성 설치
    ```bash
    npm install
    # 또는
    yarn install
    ```
 
-3. 개발 서버 실행
+2. 개발 서버 실행
    ```bash
    npm run dev
    # 또는
