@@ -224,6 +224,36 @@ export async function GET(request: NextRequest) {
         }
       );
     }
+    // 상품 리뷰 API (/api/product/v1/review)
+    else if (pathname.includes("/api/product/v1/review")) {
+      // const productId = searchParams.get("productId");
+      return new Response(JSON.stringify({
+        items: [],
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: 0,
+      }),
+        {
+          status: 200,
+          headers: { "Content-type": "application/json" },
+        }
+      );
+    }
+    // 상품 Q&A API (/api/product/v1/qna)
+    else if (pathname.includes("/api/product/v1/qna")) {
+      // const productId = searchParams.get("productId");
+      return new Response(JSON.stringify({
+        items: [],
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: 0,
+      }),
+        {
+          status: 200,
+          headers: { "Content-type": "application/json" },
+        }
+      );
+    }
     // 상품 상세 API (/api/product/v1/detail)
     else if (pathname.includes("/api/product/v1/detail")) {
       const productId = searchParams.get("productId");
@@ -233,7 +263,7 @@ export async function GET(request: NextRequest) {
             productId: productId,
             saleStatus: "ON_SALE",
             listImageUrl: "https://via.placeholder.com/150",
-            productName: "상품 이름",
+            productName: "국내산 대추 방울토마토 로얄과 2kg 실중량 [원산지:국산]",
             discountRate: 10,
             salePrice: 9000,
             netPrice: 10000,
@@ -266,6 +296,10 @@ export async function GET(request: NextRequest) {
                 ],
               },
             ],
+            productDetail: "\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a",
+            score: 4.5,
+            reviewCount: 100,
+            deliveryDuration: "2일",
           }),
         {
           status: 200,

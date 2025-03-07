@@ -2,7 +2,7 @@ import InputNumber from "@/etities/InputNumber";
 import Select from "@/etities/Select";
 import { OptionGroup } from "@/query/getProductLists";
 import React from "react";
-import { SelectedOption } from "..";
+import { SelectedOption } from "@/hooks/useSelectCart";
 import { twMerge } from "tailwind-merge";
 export default function OptionItem({
   optionGroups,
@@ -72,7 +72,7 @@ export default function OptionItem({
           {(selectedOptions || []).map(({ option, quantity }, index) => (
             <li
               key={option.optionId}
-              className={twMerge("flex justify-between items-center border-t border-gray-200 py-2", index === 0 && "border-t-0")}
+              className={twMerge("flex justify-between items-center border-t border-gray-200 py-2", index === 0 && "border-t-0", index === selectedOptions.length - 1 && "pb-0")}
             >
               <div className="flex gap-2">
                 <button

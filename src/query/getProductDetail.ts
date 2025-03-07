@@ -12,6 +12,8 @@ export const getProductDetail = async (id: number) => {
 };
 
 export interface ProductDetailType extends ProductListType {
-    productDescription: string;
     productDetail: string;
+    score: number;
+    reviewCount: number;
+    deliveryDuration: string;
 }

@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${notoSansKR.className} antialiased`}
+        className={`${notoSansKR.className} antialiased px-4`}
       >
         <LayoutProvider>
           <ErrorHandler>

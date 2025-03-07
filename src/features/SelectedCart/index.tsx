@@ -1,76 +1,50 @@
-import React, { useState } from "react";
-import { ProductListType, Option } from "@/query/getProductLists";
+import React, { Dispatch, SetStateAction, useMemo } from "react";
+import { ProductListType } from "@/query/getProductLists";
 import InputNumber from "@/etities/InputNumber";
-import Button from "@/etities/Button";
 import OptionItem from "./OptionItem";
-
-export interface SelectedOption {
-  option: Option;
-  quantity: number;
-}
+import { SelectedOption } from "@/hooks/useSelectCart";
 
 export default function SelectedCart({
   product,
-  callback,
+  selectedOptions,
+  setSelectedOptions,
+  baseQuantity,
+  setBaseQuantity,
 }: {
   product: ProductListType;
-  callback: () => void;
+  selectedOptions: SelectedOption[];
+  setSelectedOptions: Dispatch<SetStateAction<SelectedOption[]>>;
+  baseQuantity: number;
+  setBaseQuantity: Dispatch<SetStateAction<number>>;
 }) {
-  const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
-
-  // ✅ 옵션이 없는 경우 기본 상품 수량
-  const [baseQuantity, setBaseQuantity] = useState(product.minCount || 1);
-
   // ✅ 기본 상품 수량 증가/감소 핸들러 (옵션이 없는 경우)
   const handleBaseQuantityChange = (delta: number) => {
     setBaseQuantity((prev) => Math.max(prev + delta, product.minCount || 1));
   };
 
-  // ✅ 장바구니 담기 / 바로 구매하기 핸들러
-  const handleAddToCart = () => {
-    if((product.optionGroups || []).length > 0 && (selectedOptions || []).length === 0) {
-      alert("옵션을 선택해주세요.");
-      return;
+  // 총 가격 계산 로직을 useMemo로 최적화
+  const totalPrice = useMemo(() => {
+    if (product.optionGroups.length === 0) {
+      return product.salePrice * baseQuantity;
     }
-    console.log("장바구니에 담기:", {
-      product,
-      selectedOptions,
-      baseQuantity:
-        product.optionGroups.length === 0 ? baseQuantity : undefined,
-    });
-    callback();
-  };
+    return selectedOptions.reduce(
+      (acc, option) => acc + option.option.optionPrice * option.quantity,
+      0
+    );
+  }, [product, selectedOptions, baseQuantity]);
 
-  const handleBuyNow = () => {
-    if((product.optionGroups || []).length > 0 && (selectedOptions || []).length === 0) {
-      alert("옵션을 선택해주세요.");
-      return;
-    }
-    console.log("바로 구매:", {
-      product,
-      selectedOptions,
-      baseQuantity:
-        product.optionGroups.length === 0 ? baseQuantity : undefined,
-    });
-    callback();
-  };
+  const deliveryFee = useMemo(() => {
+    return (
+      product.deliveryFee +
+      (product.deliveryFeeType === "EACH"
+        ? selectedOptions.length === 0
+          ? baseQuantity
+          : selectedOptions.length
+        : 0)
+    )
+  }, [product, selectedOptions, baseQuantity]);
   return (
     <>
-      {/* 헤더 */}
-      <div className="flex justify-between items-center pb-2">
-        <h3 className="text-lg font-semibold">{product.productName}</h3>
-        <span className="text-sm text-gray-500">
-          배송비:{" "}
-          {product.deliveryFee === 0 ? (
-            "무료배송"
-          ) : (
-            <>
-              {product.deliveryFee.toLocaleString()}원
-              {product.deliveryFeeType === "EACH" && " (개별배송)"}
-            </>
-          )}
-        </span>
-      </div>
 
       {/* 옵션 그룹 */}
       {(product.optionGroups || []).length > 0 ? (
@@ -89,31 +63,19 @@ export default function SelectedCart({
       )}
 
       {/* 최종금액 */}
-      <div className="text-lg font-semibold text-right border-t border-gray-200 pt-4">
-        {(product.optionGroups || []).length === 0 ? (
-          <span>{(product.salePrice * baseQuantity).toLocaleString()}원</span>
-        ) : (
-          <span>
-            {selectedOptions
-              .reduce(
-                (acc, option) =>
-                  acc + option.option.optionPrice * option.quantity,
-                0
-              )
-              .toLocaleString()}
-            원
-          </span>
-        )}
-      </div>
-
-      {/* 버튼 그룹 */}
-      <div className="mt-4 flex gap-2">
-        <Button className="w-full" onClick={handleAddToCart}>
-          장바구니 담기
-        </Button>
-        <Button className="w-full" variant="primary" onClick={handleBuyNow}>
-          바로 구매
-        </Button>
+      <div className="flex flex-col gap-1 mt-4">
+        <div className="flex justify-between items-center">
+          <label className="text-sm text-gray-500">총 상품금액</label>
+          <span>{totalPrice.toLocaleString()}원</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <label className="text-sm text-gray-500">배송비</label>
+          <span>{deliveryFee.toLocaleString()}원</span>
+        </div>
+        <div className="flex justify-between items-center text-lg font-semibold border-t pt-2 mt-1">
+          <label className="text-base">총 금액</label>
+          <span>{totalPrice.toLocaleString()}원</span>
+        </div>
       </div>
     </>
   );

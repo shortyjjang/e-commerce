@@ -113,7 +113,7 @@ export default function Select({
 
   return (
     <div
-      className={twMerge("relative w-fit", isOpen && "z-10", className)}
+      className={twMerge("relative w-fit", isOpen && "z-[+10]", className)}
       ref={selectRef}
       tabIndex={0}
       aria-expanded={isOpen}

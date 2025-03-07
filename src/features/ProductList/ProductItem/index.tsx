@@ -3,23 +3,23 @@ import React, { useState, useMemo, useCallback, memo } from "react";
 import LazyImage from "@/etities/LazyImage";
 import IconCart from "@/assets/icons/IconCart";
 import { twMerge } from "tailwind-merge";
-import SelectedCart from "@/features/SelectedCart";
 import { useRouter } from "next/navigation";
+import CartOverlay from "../CartOverlay";
 
 // React.memo로 감싸서 불필요한 리렌더링 방지
 const ProductItem = memo(({ product }: { product: ProductListType }) => {
   const router = useRouter();
   const [isOpenCart, setIsOpenCart] = useState(false);
-  
+
   // 카트 열기/닫기 함수 메모이제이션
   const handleCartToggle = useCallback(() => {
-    setIsOpenCart(prev => !prev);
+    setIsOpenCart((prev) => !prev);
   }, []);
-  
+
   // 제품 유형 태그 메모이제이션
   const productTypeTags = useMemo(() => {
     if (!product.productType || product.productType.length === 0) return null;
-    
+
     return (
       <div className="flex flex-wrap gap-1 mb-1">
         {product.productType.map((type) => (
@@ -38,12 +38,15 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
       </div>
     );
   }, [product.productType]);
-  
+
   return (
     <li>
-      <div className="relative w-full aspect-square rounded-md overflow-hidden bg-gray-50 mb-2" onClick={() => {
-        router.push(`/${product.productId}`);
-      }}>
+      <div
+        className="relative w-full aspect-square rounded-md overflow-hidden bg-gray-50 mb-2"
+        onClick={() => {
+          router.push(`/${product.productId}`);
+        }}
+      >
         <LazyImage src={product.listImageUrl} alt={product.productName} fill />
         <button
           onClick={(e) => {
@@ -59,7 +62,9 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
       <h3 className="text-md font-semibold">{product.productName}</h3>
       <div className="flex items-center gap-1">
         {product.discountRate > 0 && (
-          <span className="text-red-500 font-bold">{product.discountRate}%</span>
+          <span className="text-red-500 font-bold">
+            {product.discountRate}%
+          </span>
         )}
         <span className="font-bold">
           {product.salePrice.toLocaleString()}원
@@ -71,16 +76,13 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
         )}
       </div>
       {isOpenCart && (
-        <SelectedCart
-          product={product}
-          callback={handleCartToggle}
-        />
+        <CartOverlay product={product} onClose={handleCartToggle} />
       )}
     </li>
   );
 });
 
 // 표시 이름 설정
-ProductItem.displayName = 'ProductItem';
+ProductItem.displayName = "ProductItem";
 
 export default ProductItem;
