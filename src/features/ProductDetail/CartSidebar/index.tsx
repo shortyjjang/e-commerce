@@ -1,5 +1,5 @@
 import Button from "@/etities/Button";
-import SelectedCart from "@/features/SelectedCart";
+import SelectedCart from "@/widget/SelectedCart";
 import useSelectCart from "@/hooks/useSelectCart";
 import { ProductListType } from "@/query/getProductLists";
 import React, { useState } from "react";

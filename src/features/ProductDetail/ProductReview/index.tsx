@@ -53,7 +53,7 @@ export default function ProductReview({
   if (!data) return null;
   return (
     <div>
-      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 py-4">
+      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 px-4 lg:px-0">
         {reviewItems}
       </ul>
       {loadingOrEndMessage}

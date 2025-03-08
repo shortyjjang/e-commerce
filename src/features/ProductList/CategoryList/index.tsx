@@ -44,7 +44,7 @@ const CategoryList = memo(({ categoryList, categoryId, setCategoryId }: Category
   if (!categoryList) return null;
 
   return (
-    <ul className="sticky top-0 z-10 bg-white whitespace-nowrap overflow-x-auto -mx-4 w-screen p-4 text-center">
+    <ul className="whitespace-nowrap overflow-x-auto p-4 pt-0 text-center">
       {categoryList.map((category, index) => (
         <li key={category.categoryId} className={twMerge(
             "inline-flex flex-col items-center align-top",

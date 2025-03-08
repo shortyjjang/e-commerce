@@ -8,6 +8,7 @@ import Search from "./Search";
 import MoreSpinner from "@/etities/MoreSpinner";
 import useInfiniteList from "@/hooks/useInfiniteList";
 import ProductItem from "./ProductItem";
+import CartButton from "@/widget/CartButton";
 
 export default function ProductList({
   initialCategoryId,
@@ -99,13 +100,19 @@ export default function ProductList({
 
   return (
     <div className="min-h-screen">
+      <div className="flex sticky top-0 z-10 bg-white gap-2 p-4 items-center">
+        <Search value={keyword} onChange={handleKeywordChange} />
+        <CartButton />
+      </div>
       <CategoryList
         categoryList={categoryList}
         categoryId={categoryId}
         setCategoryId={handleCategoryChange}
       />
-      <Search value={keyword} onChange={handleKeywordChange} />
-      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 py-4">
+      <div className="p-4 text-sm text-gray-400">
+        <b className="font-bold text-black">{data?.pages[0].totalItems}개</b>의 상품이 있습니다.
+      </div>
+      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 p-4">
         {productItems}
       </ul>
       {loadingOrEndMessage}

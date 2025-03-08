@@ -1,6 +1,7 @@
-import { ProductListType } from '@/query/getProductLists';
-import { useRef, useState } from 'react'
-import { Option } from '@/query/getProductLists';
+import { ProductListType } from "@/query/getProductLists";
+import { useRef, useState } from "react";
+import { Option } from "@/query/getProductLists";
+import { useCart } from "@/layout/LayoutProvider";
 
 export interface SelectedOption {
   option: Option;
@@ -8,38 +9,104 @@ export interface SelectedOption {
 }
 
 export default function useSelectCart(product: ProductListType) {
-    const callback = useRef<() => void>(() => {});
-    const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
-    // ✅ 옵션이 없는 경우 기본 상품 수량
-    const [baseQuantity, setBaseQuantity] = useState(product.minCount || 1);
-    // ✅ 장바구니 담기 / 바로 구매하기 핸들러
-    const handleAddToCart = (callback?: () => void) => {
-      if((product.optionGroups || []).length > 0 && (selectedOptions || []).length === 0) {
-        alert("옵션을 선택해주세요.");
-        return;
-      }
-      console.log("장바구니에 담기:", {
-        product,
-        selectedOptions,
-        baseQuantity:
-          product.optionGroups.length === 0 ? baseQuantity : undefined,
-      });
-      callback?.();
-    };
-  
-    const handleBuyNow = (callback?: () => void) => {
-      if((product.optionGroups || []).length > 0 && (selectedOptions || []).length === 0) {
-        alert("옵션을 선택해주세요.");
-        return;
-      }
-      console.log("바로 구매:", {
-        product,
-        selectedOptions,
-        baseQuantity:
-          product.optionGroups.length === 0 ? baseQuantity : undefined,
-      });
-      callback?.();
-    };
+  const callback = useRef<() => void>(() => {});
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
+
+  const { cart, setCart, setPaymentItems } = useCart();
+
+  // ✅ 옵션이 없는 경우 기본 상품 수량
+  const [baseQuantity, setBaseQuantity] = useState(product.minCount || 1);
+
+  // ✅ 장바구니 담기 / 바로 구매하기 핸들러
+  const handleAddToCart = (callback?: () => void) => {
+    if (
+      (product.optionGroups || []).length > 0 &&
+      (selectedOptions || []).length === 0
+    ) {
+      alert("옵션을 선택해주세요.");
+      return;
+    }
+    if (cart.some((item) => item.productId === product.productId)) {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.productId === product.productId
+            ? {
+                ...item,
+                quantity:
+                  product.optionGroups.length === 0
+                    ? item.quantity + baseQuantity
+                    : item.quantity +
+                      selectedOptions.reduce((acc, option) => acc + option.quantity, 0),
+                options: product.optionGroups.length === 0 ? [] : [
+                  ...item.options.map((option) =>
+                    selectedOptions.some(
+                      (opt) => opt.option.optionId === option.option.optionId
+                    )
+                      ? {
+                          ...option,
+                          quantity: option.quantity + (selectedOptions.find(
+                            (opt) => opt.option.optionId === option.option.optionId
+                          )?.quantity || 0),
+                        }
+                      : option
+                  ),
+                  ...selectedOptions.filter(
+                    (opt) =>
+                      !item.options.some(
+                        (option) => option.option.optionId === opt.option.optionId
+                      )
+                  ),
+                ],
+              }
+            : item
+        )
+      );
+    } else {
+      const newItem = {
+        productId: product.productId,
+        listImageUrl: product.listImageUrl,
+        productName: product.productName,
+        discountRate: product.discountRate,
+        salePrice: product.salePrice,
+        netPrice: product.netPrice,
+        deliveryFee: product.deliveryFee,
+        deliveryFeeType: product.deliveryFeeType,
+        quantity:
+          product.optionGroups.length === 0
+            ? baseQuantity
+            : selectedOptions.reduce((acc, option) => acc + option.quantity, 0),
+        options: product.optionGroups.length === 0 ? [] : selectedOptions,
+      };
+      setCart((prev) => [...prev, newItem]);
+    }
+    callback?.();
+  };
+
+  const handleBuyNow = (callback?: () => void) => {
+    if (
+      (product.optionGroups || []).length > 0 &&
+      (selectedOptions || []).length === 0
+    ) {
+      alert("옵션을 선택해주세요.");
+      return;
+    }
+    setPaymentItems([{
+        productId: product.productId,
+        listImageUrl: product.listImageUrl,
+        productName: product.productName,
+        discountRate: product.discountRate,
+        salePrice: product.salePrice,
+        netPrice: product.netPrice,
+      deliveryFee: product.deliveryFee,
+      deliveryFeeType: product.deliveryFeeType,
+      quantity:
+        product.optionGroups.length === 0
+          ? baseQuantity
+          : selectedOptions.reduce((acc, option) => acc + option.quantity, 0),
+      options: product.optionGroups.length === 0 ? [] : selectedOptions,
+    }]);
+    callback?.();
+  };
   return {
     selectedOptions,
     setSelectedOptions,
@@ -48,5 +115,5 @@ export default function useSelectCart(product: ProductListType) {
     baseQuantity,
     setBaseQuantity,
     callback,
-  }
+  };
 }

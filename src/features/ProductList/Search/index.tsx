@@ -13,7 +13,7 @@ export default function Search({
     setKeyword(value);
   }, [value]);
   return (
-    <div className="pb-4">
+    <div className="flex-1">
       <input
         value={keyword}
         onChange={(e) => {

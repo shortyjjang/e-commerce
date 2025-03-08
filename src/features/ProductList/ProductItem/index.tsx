@@ -26,7 +26,7 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
           <span
             key={type}
             className={twMerge(
-              "text-xs text-gray-400 rounded-sm px-1 py-0.5",
+              "text-xs text-gray-400 rounded-xs px-1 py-0.5",
               type === "한정수량"
                 ? "bg-green-500 text-white"
                 : "border border-gray-400"
@@ -59,8 +59,13 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
         </button>
       </div>
       {productTypeTags}
-      <h3 className="text-md font-semibold">{product.productName}</h3>
-      <div className="flex items-center gap-1">
+      <h3 className="text-md font-normal mb-1">{product.productName}</h3>
+      {product.discountRate > 0 && (
+        <div className="text-gray-400 line-through text-sm">
+          {product.netPrice.toLocaleString()}원
+        </div>
+      )}
+      <div className="flex items-center gap-2">
         {product.discountRate > 0 && (
           <span className="text-red-500 font-bold">
             {product.discountRate}%
@@ -69,12 +74,12 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
         <span className="font-bold">
           {product.salePrice.toLocaleString()}원
         </span>
-        {product.discountRate > 0 && (
-          <span className="text-gray-400 line-through text-sm">
-            {product.netPrice.toLocaleString()}원
-          </span>
-        )}
       </div>
+      {product.deliveryFee === 0 && (
+        <span className="inline-block align-top mt-2 text-xs px-1 py-0.5 bg-gray-100 rounded-sm text-gray-500">
+          무료배송
+        </span>
+      )}
       {isOpenCart && (
         <CartOverlay product={product} onClose={handleCartToggle} />
       )}
