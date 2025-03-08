@@ -47,7 +47,12 @@ const ProductItem = memo(({ product }: { product: ProductListType }) => {
           router.push(`/${product.productId}`);
         }}
       >
-        <LazyImage src={product.listImageUrl} alt={product.productName} fill />
+        <LazyImage
+          src={product.listImageUrl}
+          alt={product.productName}
+          fill
+          priority={true}
+        />
         <button
           onClick={(e) => {
             e.stopPropagation();

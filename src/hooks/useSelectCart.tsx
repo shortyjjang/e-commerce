@@ -1,7 +1,9 @@
+"use client";
 import { ProductListType } from "@/query/getProductLists";
 import { useRef, useState } from "react";
 import { Option } from "@/query/getProductLists";
 import { useCart } from "@/layout/LayoutProvider";
+import { useRouter } from "next/navigation";
 
 export interface SelectedOption {
   option: Option;
@@ -13,7 +15,7 @@ export default function useSelectCart(product: ProductListType) {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
 
   const { cart, setCart, setPaymentItems } = useCart();
-
+  const router = useRouter();
   // ✅ 옵션이 없는 경우 기본 상품 수량
   const [baseQuantity, setBaseQuantity] = useState(product.minCount || 1);
 
@@ -105,6 +107,7 @@ export default function useSelectCart(product: ProductListType) {
           : selectedOptions.reduce((acc, option) => acc + option.quantity, 0),
       options: product.optionGroups.length === 0 ? [] : selectedOptions,
     }]);
+    router.push("/order");
     callback?.();
   };
   return {

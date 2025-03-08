@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "via.placeholder.com",
+        hostname: process.env.NEXT_PUBLIC_IMAGE_URL || "",
       },
     ],
   },

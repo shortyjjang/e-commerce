@@ -109,10 +109,10 @@ export default function ProductList({
         categoryId={categoryId}
         setCategoryId={handleCategoryChange}
       />
-      <div className="p-4 text-sm text-gray-400">
+      <div className="px-4 pb-2 text-sm text-gray-400">
         <b className="font-bold text-black">{data?.pages[0].totalItems}개</b>의 상품이 있습니다.
       </div>
-      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 p-4">
+      <ul className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 p-4 pt-0">
         {productItems}
       </ul>
       {loadingOrEndMessage}

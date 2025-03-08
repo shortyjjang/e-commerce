@@ -3,7 +3,7 @@ import { getProductDetail, ProductDetailType } from "@/query/getProductDetail";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import CartSidebar from "./CartSidebar";
-import ZommImage from "@/etities/ZoomImage";
+import Image from "next/image";
 import ProductReview from "./ProductReview";
 import ProductQna from "./ProductQna";
 import CartButton from "@/widget/CartButton";
@@ -48,9 +48,13 @@ export default function ProductDetail({
       </div>
       <div className="md:grid md:grid-cols-[minmax(400px,40%)_auto] gap-6 md:pb-8">
         <div className="relative aspect-square rounded-md overflow-hidden bg-gray-50">
-          <ZommImage
+          <Image
             src={productDetail.listImageUrl}
             alt={productDetail.productName}
+            fill
+            className="object-cover"
+            priority={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 20vw"
           />
         </div>
         <div className="flex flex-col justify-between">

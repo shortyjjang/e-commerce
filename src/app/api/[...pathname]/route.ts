@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 1,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 0,
               salePrice: 10000,
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 2,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 10,
               salePrice: 9000,
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 3,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 0,
               salePrice: 10000,
@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 4,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 10,
               salePrice: 9000,
@@ -166,7 +166,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 5,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 0,
               salePrice: 10000,
@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
             {
               productId: 6,
               saleStatus: "ON_SALE",
-              listImageUrl: "https://via.placeholder.com/150",
+              listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
               productName: categoryId + "상품 이름",
               discountRate: 10,
               salePrice: 9000,
@@ -262,7 +262,7 @@ export async function GET(request: NextRequest) {
           {
             productId: productId,
             saleStatus: "ON_SALE",
-            listImageUrl: "https://via.placeholder.com/150",
+            listImageUrl: "https://shop-phinf.pstatic.net/20241230_274/1735525672680lhyhV_JPEG/10009339684092958_2006247143.jpg?type=m510",
             productName: "국내산 대추 방울토마토 로얄과 2kg 실중량 [원산지:국산]",
             discountRate: 10,
             salePrice: 9000,
