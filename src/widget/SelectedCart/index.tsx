@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useMemo } from "react";
 import { ProductListType } from "@/query/getProductLists";
 import InputNumber from "@/etities/InputNumber";
 import OptionItem from "./OptionItem";
-import { SelectedOption } from "@/hooks/useSelectCart";
+import { CartItemOptions } from "@/layout/LayoutProvider";
 
 export default function SelectedCart({
   product,
@@ -12,8 +12,8 @@ export default function SelectedCart({
   setBaseQuantity,
 }: {
   product: ProductListType;
-  selectedOptions: SelectedOption[];
-  setSelectedOptions: Dispatch<SetStateAction<SelectedOption[]>>;
+  selectedOptions: CartItemOptions[];
+  setSelectedOptions: Dispatch<SetStateAction<CartItemOptions[]>>;
   baseQuantity: number;
   setBaseQuantity: Dispatch<SetStateAction<number>>;
 }) {
@@ -28,7 +28,7 @@ export default function SelectedCart({
       return product.salePrice * baseQuantity;
     }
     return selectedOptions.reduce(
-      (acc, option) => acc + option.option.optionPrice * option.quantity,
+      (acc, option) => acc + (product.salePrice + option.option.optionPrice) * option.quantity,
       0
     );
   }, [product, selectedOptions, baseQuantity]);
@@ -74,7 +74,7 @@ export default function SelectedCart({
         </div>
         <div className="flex justify-between items-center text-lg font-semibold border-t pt-2 mt-1">
           <label className="text-base">총 금액</label>
-          <span>{totalPrice.toLocaleString()}원</span>
+          <span>{(totalPrice + deliveryFee).toLocaleString()}원</span>
         </div>
       </div>
     </>

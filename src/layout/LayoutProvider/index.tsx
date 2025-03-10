@@ -6,11 +6,15 @@ const CartContext = createContext<{
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   paymentItems: CartItem[];
   setPaymentItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  orderNumber: string;
+  setOrderNumber: React.Dispatch<React.SetStateAction<string>>;
 }>({
   cart: [],
   setCart: () => {},
   paymentItems: [],
   setPaymentItems: () => {},
+  orderNumber: "",
+  setOrderNumber: () => {},
 });
 
 export default function LayoutProvider({
@@ -20,8 +24,9 @@ export default function LayoutProvider({
 }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [paymentItems, setPaymentItems] = useState<CartItem[]>([]);
+  const [orderNumber, setOrderNumber] = useState<string>("");
   return (
-    <CartContext.Provider value={{ cart, setCart, paymentItems, setPaymentItems }}>
+    <CartContext.Provider value={{ cart, setCart, paymentItems, setPaymentItems, orderNumber, setOrderNumber }}>
       <div className="max-w-screen-lg mx-auto">{children}</div>
     </CartContext.Provider>
   );
@@ -41,8 +46,13 @@ export interface CartItem {
   deliveryFee: number;
   deliveryFeeType: "EACH" | "ALL";
   quantity: number;
-  options: {
-    option: Option;
-    quantity: number;
-  }[];
+  options: CartItemOptions[];
+}
+
+export interface CartItemOption extends Option {
+  optionGroupName: string;
+}
+export interface CartItemOptions {
+  option: CartItemOption;
+  quantity: number;
 }

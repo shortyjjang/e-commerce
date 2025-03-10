@@ -1,17 +1,16 @@
-import InputNumber from "@/etities/InputNumber";
 import Select from "@/etities/Select";
 import { OptionGroup } from "@/query/getProductLists";
 import React from "react";
-import { SelectedOption } from "@/hooks/useSelectCart";
-import { twMerge } from "tailwind-merge";
+import { CartItemOptions } from "@/layout/LayoutProvider";
+import SelectedOptions from "../SelectedOptions";
 export default function OptionItem({
   optionGroups,
   selectedOptions,
   setSelectedOptions,
 }: {
   optionGroups: OptionGroup[];
-  selectedOptions: SelectedOption[];
-  setSelectedOptions: React.Dispatch<React.SetStateAction<SelectedOption[]>>;
+  selectedOptions: CartItemOptions[];
+  setSelectedOptions: React.Dispatch<React.SetStateAction<CartItemOptions[]>>;
 }) {
   // ✅ 옵션 선택 핸들러
   const handleSelectOption = (optionId: number) => {
@@ -25,7 +24,16 @@ export default function OptionItem({
       return;
     setSelectedOptions([
       ...selectedOptions,
-      { option, quantity: option?.minCount || 1 },
+      {
+        option: {
+          ...option,
+          optionGroupName:
+            optionGroups.find((group) =>
+              group.options.some((option) => option.optionId === optionId)
+            )?.optionGroupName || "",
+        },
+        quantity: option?.minCount || 1,
+      },
     ]);
   };
 
@@ -70,31 +78,27 @@ export default function OptionItem({
       {(selectedOptions || []).length > 0 && (
         <ul>
           {(selectedOptions || []).map(({ option, quantity }, index) => (
-            <li
+            <SelectedOptions
               key={option.optionId}
-              className={twMerge("flex justify-between items-center border-t border-gray-200 py-2", index === 0 && "border-t-0", index === selectedOptions.length - 1 && "pb-0")}
-            >
-              <div className="flex gap-2">
-                <button
-                  className="text-gray-500"
-                  onClick={() => handleRemoveOption(option.optionId)}
-                  aria-label="삭제"
-                >
-                  ✕
-                </button>
-                <div className="flex flex-col">
-                  <span className="text-sm">{optionGroups.find((group) => group.options.some((option) => option.optionId === option.optionId))?.optionGroupName}: {option.optionName}</span>
-                  <span className="text-gray-500 text-xs">
-                    (+{option.optionPrice}원)
-                  </span>
-                </div>
-              </div>
-              <InputNumber
-                onIncrease={() => handleQuantityChange(option.optionId, 1)}
-                onDecrease={() => handleQuantityChange(option.optionId, -1)}
-                value={quantity}
-              />
-            </li>
+              option={option}
+              optionGroupName={
+                optionGroups.find((group) =>
+                  group.options.some(
+                    (option) => option.optionId === option.optionId
+                  )
+                )?.optionGroupName || ""
+              }
+              handleRemoveOption={handleRemoveOption}
+              handleQuantityChange={handleQuantityChange}
+              quantity={quantity}
+              className={
+                index === 0
+                  ? "border-t-0"
+                  : index === selectedOptions.length - 1
+                  ? "pb-0"
+                  : ""
+              }
+            />
           ))}
         </ul>
       )}

@@ -1,18 +1,13 @@
 "use client";
 import { ProductListType } from "@/query/getProductLists";
 import { useRef, useState } from "react";
-import { Option } from "@/query/getProductLists";
-import { useCart } from "@/layout/LayoutProvider";
+import { CartItemOptions, useCart } from "@/layout/LayoutProvider";
 import { useRouter } from "next/navigation";
 
-export interface SelectedOption {
-  option: Option;
-  quantity: number;
-}
 
 export default function useSelectCart(product: ProductListType) {
   const callback = useRef<() => void>(() => {});
-  const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<CartItemOptions[]>([]);
 
   const { cart, setCart, setPaymentItems } = useCart();
   const router = useRouter();
