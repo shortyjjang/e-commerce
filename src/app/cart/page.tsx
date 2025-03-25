@@ -1,6 +1,7 @@
 "use client";
 
 import IconBack from "@/assets/icons/IconBack";
+import Button from "@/etities/Button";
 import CartList from "@/features/Order/Cart/CartList";
 import CartPaymentButton from "@/features/Order/Cart/CartPaymentButton";
 import { useCart } from "@/layout/LayoutProvider";
@@ -8,7 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
 export default function CartPage() {
-  const { cart } = useCart();
+  const { cart, setCart } = useCart();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const router = useRouter();
   const totalPrice = useMemo(
@@ -55,9 +56,14 @@ export default function CartPage() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-screen h-screen z-10">
-        <div className="bg-white">
-            <button onClick={() => router.back()} aria-label="뒤로가기" className="p-4"><IconBack /></button>
+      <div className="fixed inset-0 bg-black/50"></div>
+      <div className="fixed top-0 left-0 w-full z-10 bg-white">
+        <div className="w-full max-w-screen-lg mx-auto flex justify-between items-center">
+            <button onClick={() => router.back()} aria-label="뒤로가기" className="p-4 lg:-ml-4"><IconBack /></button>
+            <Button onClick={() => {
+                setCart((prev) => prev.filter((item) => !selectedItems.includes(item.productId)));
+                setSelectedItems([]);
+            }}>선택삭제</Button>
         </div>
       </div>
       <div className="lg:grid lg:grid-cols-[auto_300px] gap-4 py-4 pt-18">

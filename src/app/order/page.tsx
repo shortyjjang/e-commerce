@@ -1,5 +1,5 @@
-import PaymentPage from "@/features/Order/Payment";
+import TossPayment from "@/features/Order/Payment";
 
 export default function Order() {
-  return <PaymentPage />;
+  return <TossPayment />;
 }
